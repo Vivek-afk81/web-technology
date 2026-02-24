@@ -1,11 +1,3 @@
-// void main(){
-//     int a= 10;
-//     int b=67;
-
-//     print("${a+b} ${a-b} ${a/b}");
-// }
-
-// How to take user input
 import 'dart:io';
 
 
@@ -14,3 +6,11 @@ void main(){
     String? name = stdin.readLineSync();
     print('Hello, $name!');
 }
+// void main(){
+//     int a= 10;
+//     int b=67;
+
+//     print("${a+b} ${a-b} ${a/b}");
+// }
+
+// How to take user input
