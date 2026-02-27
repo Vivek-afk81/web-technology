@@ -12,12 +12,22 @@
 //   }
 // }
 
-// // using named parameters
+// // using named parameters (very powerfull in dart)
 
 // class Example {
 //   void greet({String? name, int? age}) {
 //     print("Name: $name, Age: $age");
 //   }
+// }
+
+// // using dynamic keyword
+
+// void main() {
+//   dynamic name = "John";
+//   print(name.length);  // Works
+
+//   name = 10;
+//   print(name.length);  // Runtime Error 
 // }
 
 // void main() {
