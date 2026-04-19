@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:student_organizer/notes_screen.dart';
 import 'tasks_screen.dart';
 import 'schedule_screen.dart';
+import 'notes_screen.dart';
 
 class HomeScreen extends StatefulWidget{
   @override
@@ -13,7 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _screens = [   
     Center(child: TasksScreen()),
     Center(child: ScheduleScreen()),
-    Center(child: Text("Notes Screen")),
+    Center(child: NotesScreen()),
   ];
 
   void _onTabTapped(int index) {  //onTap when user clicks
