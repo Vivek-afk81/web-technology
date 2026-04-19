@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'tasks_screen.dart';
+import 'schedule_screen.dart';
 
 class HomeScreen extends StatefulWidget{
   @override
@@ -11,7 +12,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final List<Widget> _screens = [   
     Center(child: TasksScreen()),
-    Center(child: Text("Schedule Screen")),
+    Center(child: ScheduleScreen()),
     Center(child: Text("Notes Screen")),
   ];
 
