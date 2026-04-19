@@ -5,6 +5,6 @@ void main(){
         print("adult");
     }
     else{
-        print("minor")
+        print("minor");
     }
 }

@@ -1,8 +1,8 @@
-class car {
+class Car {
     String brand = "Toyota";
 
     void drive() {
-        print("car is driving")
+        print("car is driving");
     }
 }
 

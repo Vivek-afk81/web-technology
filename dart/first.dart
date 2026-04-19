@@ -6,5 +6,5 @@ void main(){
 
     print("Name: $name");
     print("Age: $age");
-    print("isTeacher: $isTeacher")
+    print("isTeacher: $isTeacher");
 }
