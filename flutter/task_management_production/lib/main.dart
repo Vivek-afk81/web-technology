@@ -149,7 +149,7 @@ class TaskApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'TaskMaster',
+      title: 'FocusForge',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.theme,
       home: const TaskDashboardScreen(),
@@ -159,9 +159,6 @@ class TaskApp extends StatelessWidget {
 
 // ========== SCREENS ==========
 
-// 🎓 Viva Q: "Why SingleTickerProviderStateMixin?"
-// A: Provides a single vsync Ticker for the TabController animation — efficient
-//    because only one animation runs at a time in this widget.
 class TaskDashboardScreen extends StatefulWidget {
   const TaskDashboardScreen({super.key});
 
@@ -211,10 +208,7 @@ class _TaskDashboardScreenState extends State<TaskDashboardScreen>
 
   // ---- Computed filtered + sorted list ----
 
-  // 🎓 Viva Q: "Walk me through how the list is filtered and sorted."
-  // A: We first filter by tab (all/pending/completed), then by priority if a
-  //    priority filter is active, then by search query. Finally we sort a copy
-  //    of the filtered list using Dart's List.sort() with a Comparator.
+
   List<Task> get _processedTasks {
     // Step 1: tab filter
     List<Task> result;
@@ -239,10 +233,7 @@ class _TaskDashboardScreenState extends State<TaskDashboardScreen>
       result = result.where((t) => t.title.toLowerCase().contains(_searchQuery)).toList();
     }
 
-    // Step 4: sort
-    // 🎓 Viva Q: "What does List.sort() do and what is a Comparator?"
-    // A: sort() mutates the list in-place using a comparison function.
-    //    A Comparator returns negative if a < b, 0 if equal, positive if a > b.
+
     switch (_sortOption) {
       case SortOption.dueDate:
         result.sort((a, b) => a.dueDate.compareTo(b.dueDate));
@@ -289,9 +280,7 @@ class _TaskDashboardScreenState extends State<TaskDashboardScreen>
   }
 
   // ---- Sort / Filter bottom sheet ----
-  // 🎓 Viva Q: "Why use a bottom sheet for sort/filter instead of a dropdown?"
-  // A: Bottom sheets are more touch-friendly on mobile — they provide bigger
-  //    tap targets and feel more native on Android/iOS than dropdown menus.
+
   void _showSortFilterSheet() {
     showModalBottomSheet(
       context: context,
@@ -375,10 +364,7 @@ class _TaskDashboardScreenState extends State<TaskDashboardScreen>
           ProgressSection(completed: _completedCount, total: _tasks.length),
 
           // ---- Search Bar ----
-          // 🎓 Viva Q: "How does live search work here?"
-          // A: TextEditingController has an addListener callback. Every keystroke
-          //    calls setState() updating _searchQuery, which triggers a rebuild
-          //    and the getter re-filters the list with the new query.
+
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
             child: TextField(
@@ -574,10 +560,7 @@ class TaskCard extends StatelessWidget {
 
   const TaskCard({super.key, required this.task, required this.onToggle, required this.onDelete});
 
-  // 🎓 Viva Q: "Explain the date formatting logic."
-  // A: We strip the time component by constructing DateTime with year/month/day
-  //    only, then compute inDays difference. This avoids edge cases where
-  //    "today at 11pm" minus "now at 1pm" returns 0 days incorrectly.
+
   String _formatDate(DateTime date) {
     final now   = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
@@ -592,10 +575,7 @@ class TaskCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 🎓 Viva Q: "How does Dismissible work?"
-    // A: Wraps a widget and listens for horizontal drag. onDismissed fires after
-    //    animation. You MUST remove the item from data in onDismissed or Flutter
-    //    throws an error expecting the item to be gone.
+
     return Dismissible(
       key: ValueKey(task.id),
       direction: DismissDirection.endToStart,
@@ -617,9 +597,7 @@ class TaskCard extends StatelessWidget {
           ],
         ),
       ),
-      // 🎓 Viva Q: "What is AnimatedContainer?"
-      // A: Smoothly interpolates between old and new decoration values over
-      //    `duration` when setState is called — zero boilerplate animation.
+
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         margin: const EdgeInsets.symmetric(vertical: 6),
@@ -719,11 +697,7 @@ class PriorityBadge extends StatelessWidget {
 
 // ---------- Empty State ----------
 
-// 🎓 Viva Q: "Why does EmptyState take parameters now?"
-// A: It behaves differently in two contexts: when there are genuinely no tasks,
-//    we show an onboarding CTA. When the user searched and got no results, we
-//    show a 'no results' message instead. Passing context via constructor keeps
-//    the widget reusable without internal logic knowing about parent state.
+
 class EmptyState extends StatelessWidget {
   final bool isSearching;
   final VoidCallback onAddTask;
@@ -790,10 +764,7 @@ class EmptyState extends StatelessWidget {
 
 // ---------- Sort & Filter Bottom Sheet ----------
 
-// 🎓 Viva Q: "Why is SortFilterSheet a StatefulWidget?"
-// A: It has its own temporary local state for the selected sort/filter options.
-//    The user can change selections without affecting the parent — they only
-//    apply when 'Apply' is tapped. This is the "local draft state" pattern.
+
 class SortFilterSheet extends StatefulWidget {
   final SortOption currentSort;
   final FilterOption currentFilter;
@@ -915,9 +886,7 @@ class _SortFilterSheetState extends State<SortFilterSheet> {
 
 // ---------- Add Task Bottom Sheet ----------
 
-// 🎓 Viva Q: "Why is AddTaskBottomSheet StatefulWidget?"
-// A: It owns local form state (title, priority, date) that only matters while
-//    the sheet is open. When dismissed, this state is cleanly disposed.
+
 class AddTaskBottomSheet extends StatefulWidget {
   final Function(Task) onAdd;
   const AddTaskBottomSheet({super.key, required this.onAdd});
@@ -941,10 +910,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
     super.dispose();
   }
 
-  // 🎓 Viva Q: "Why is _pickDate async and uses await?"
-  // A: showDatePicker shows a dialog and returns a Future<DateTime?> — it
-  //    completes asynchronously when the user picks a date or cancels.
-  //    We await it so the code below only runs once the dialog is dismissed.
+
   Future<void> _pickDate() async {
     final picked = await showDatePicker(
       context: context,
@@ -974,11 +940,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
   }
 
   // ---- Relative date label for the date picker display ----
-  // 🎓 Viva Q: "Where is this used and why is it here and not in TaskCard?"
-  // A: TaskCard also has a similar method. Both are private helpers on their
-  //    respective State/StatelessWidget classes. They're intentionally separate
-  //    because TaskCard's version shows "⚠ Overdue" while this one only shows
-  //    future-relative labels — the same method wouldn't suit both contexts.
+
   String _relativeDateLabel(DateTime date) {
     final now   = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
@@ -992,9 +954,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    // 🎓 Viva Q: "What is DraggableScrollableSheet?"
-    // A: A sheet that the user can drag to different height fractions.
-    //    initialChildSize is the starting height as a fraction of screen height.
+
     return DraggableScrollableSheet(
       initialChildSize: 0.72,
       minChildSize: 0.5,
@@ -1043,9 +1003,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                     hintText: 'e.g. Complete project report',
                     prefixIcon: Icon(Icons.title_rounded, color: AppTheme.primary),
                   ),
-                  // 🎓 Viva Q: "What is a Form validator?"
-                  // A: A function receiving the current value; returns an error
-                  //    String if invalid, or null if valid. Called by validate().
+
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
                       return 'Task title cannot be empty';
@@ -1119,10 +1077,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                         const Icon(Icons.calendar_month_rounded, color: AppTheme.primary),
                         const SizedBox(width: 12),
                         // ---- IMPROVED: relative label + numeric date ----
-                        // 🎓 Viva Q: "Why show both relative and absolute date?"
-                        // A: The relative label ('Tomorrow') is cognitively faster
-                        //    to parse. The numeric date provides precision. Together
-                        //    they reduce user error when picking deadlines.
+
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
